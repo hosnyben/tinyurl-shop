@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class Product extends Model
 {
     use HasFactory;
@@ -14,8 +16,29 @@ class Product extends Model
 
     protected $primaryKey = 'uuid';
 
+    protected $hidden = ['id','top','deleted','created_at','updated_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('deleted', function (Builder $builder) {
+            $columns = array_column($builder->getQuery()->wheres, 'column');
+
+            if(!in_array('deleted', $columns)) {
+                $builder->where('deleted', 0);
+            }
+        });
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function delete()
+    {
+        $this->deleted = true;
+        $this->save();
     }
 }
