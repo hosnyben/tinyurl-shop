@@ -68,10 +68,24 @@ services:
     networks:
       - tinyurl
 
+  # Redis Service
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - tinyurl
+
 networks:
   tinyurl:
     driver: bridge
 
 volumes:
   mysql-data:
+    driver: local
+  redis-data:
     driver: local
