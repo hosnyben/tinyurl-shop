@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class CategorySeeder extends Seeder
+class ProductSeeder extends Seeder
 {
     // Disable model events for faster seeding
     use WithoutModelEvents;
@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed 150 categories
-        Category::factory(150)->create();
+        // Seed products
+        Product::factory(1000)->create();
     }
 }
