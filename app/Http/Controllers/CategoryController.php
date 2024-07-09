@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
+
+// Requests
+use App\Http\Requests\Category\CategoryStore;
+use App\Http\Requests\Category\CategoryUpdate;
 
 class CategoryController extends Controller
 {
@@ -12,38 +15,68 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::simplePaginate(config('app.paginate'));
+
+        return response()->json($categories);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryStore $request)
     {
-        //
+        try {
+            $category = new Category($request->validated());
+            $category->save();
+
+            return response()->json($category);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+
+            return response()->json($category);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdate $request, string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+            $category->fill($request->validated());
+            $category->save();
+
+            return response()->json($category);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+
+            return response()->json(['message' => 'Category deleted successfully!']);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
