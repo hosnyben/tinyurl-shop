@@ -22,7 +22,6 @@ class ProductIndex extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => 'uuid',
             'top' => 'boolean',
             'sortBy' => 'string|in:name,price,category',
             'sort' => 'string|in:asc,desc'

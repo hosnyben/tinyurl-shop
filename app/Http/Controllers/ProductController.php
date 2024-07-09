@@ -9,6 +9,8 @@ use App\Http\Requests\Product\ProductIndex;
 use App\Http\Requests\Product\ProductUpdate;
 use App\Http\Requests\Product\ProductStore;
 
+use Illuminate\Support\Arr;
+
 class ProductController extends Controller
 {
     /**
@@ -16,8 +18,29 @@ class ProductController extends Controller
      */
     public function index(ProductIndex $request)
     {
+        // Added products table prefix to avoid ambiguity when joining tables
+        $products = Product::select(['products.uuid','products.name','products.description','products.price'])
+                        ->where('products.top', $request->input('top', 0));
+
         // Paginate products
-        $products = Product::where('top', $request->input('top', 0))->simplePaginate(config('app.pagination'));
+        $sort = $request->input('sort', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+
+        $sortMapping = [
+            'name' => 'products.name',
+            'price' => 'products.price',
+            'category' => 'categories.name'
+        ];
+
+        if($sortBy === 'category') {
+            $products = $products
+                            ->join('category_product', 'products.uuid', '=', 'category_product.product_uuid')
+                            ->join('categories', 'category_product.category_uuid', '=', 'categories.uuid');
+        }
+
+        $products = $products
+                        ->orderBy($sortMapping[$sortBy], $sort)
+                        ->simplePaginate(config('app.pagination'));
 
         return response()->json($products);
     }
@@ -28,8 +51,12 @@ class ProductController extends Controller
     public function store(ProductStore $request)
     {
         try {
-            $product = new Product($request->validated());
+            $validatedData = $request->validated();
+
+            $product = new Product(Arr::except($validatedData, ['category']));
             $product->save();
+
+            $product->categories()->attach($validatedData['categories']);
 
             return response()->json($product);
         } catch (\Throwable $th) {
@@ -57,9 +84,13 @@ class ProductController extends Controller
     public function update(ProductUpdate $request, $id)
     {
         try {
+            $validatedData = $request->validated();
+
             $product = Product::findOrFail($id);
-            $product->fill($request->validated());
+            $product->fill(Arr::except($validatedData, ['category']));
             $product->save();
+
+            $product->categories()->sync($validatedData['categories']);
 
             return response()->json($product);
         } catch (\Throwable $th) {

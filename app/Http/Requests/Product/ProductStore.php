@@ -26,6 +26,7 @@ class ProductStore extends FormRequest
             'description' => 'required|string',
             'price' => 'required|integer',
             'top' => 'required|boolean',
+            'categories' => 'required|array',
         ];
     }
 }

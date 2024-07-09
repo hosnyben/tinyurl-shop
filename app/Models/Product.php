@@ -18,6 +18,8 @@ class Product extends Model
 
     protected $hidden = ['id','top','deleted','created_at','updated_at'];
 
+    protected $fillable = ['name', 'description', 'price', 'top'];
+
     protected static function boot()
     {
         parent::boot();
@@ -26,7 +28,7 @@ class Product extends Model
             $columns = array_column($builder->getQuery()->wheres, 'column');
 
             if(!in_array('deleted', $columns)) {
-                $builder->where('deleted', 0);
+                $builder->where('products.deleted', 0);
             }
         });
     }
