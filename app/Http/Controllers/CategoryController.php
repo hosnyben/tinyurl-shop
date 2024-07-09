@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Http\Requests\Category\CategoryStore;
 use App\Http\Requests\Category\CategoryUpdate;
 
+use Illuminate\Support\Facades\Cache;
+
 class CategoryController extends Controller
 {
     /**
@@ -15,9 +17,17 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::simplePaginate(config('app.paginate'));
+        $cacheKey = 'categories_' . request()->input('page', 1);
 
-        return response()->json($categories);
+        if( Cache::has($cacheKey) ) {
+            return Cache::get($cacheKey);
+        } else {
+            return Cache::rememberForever($cacheKey, function () {
+                $categories = Category::simplePaginate(config('app.paginate'));
+
+                return response()->json($categories);
+            });
+        }
     }
 
     /**

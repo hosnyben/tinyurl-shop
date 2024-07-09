@@ -31,7 +31,7 @@ services:
     networks:
       - tinyurl
     depends_on:
-      - mysql
+      - redis
 
   # MySQL Service
   mysql:
