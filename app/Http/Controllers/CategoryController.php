@@ -19,7 +19,7 @@ class CategoryController extends Controller
     {
         $cacheKey = 'categories_' . request()->input('page', 1);
 
-        if( Cache::has($cacheKey) ) {
+        if(Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         } else {
             return Cache::rememberForever($cacheKey, function () {

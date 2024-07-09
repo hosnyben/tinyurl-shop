@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Jobs\ClearCache;
+
 class Product extends Model
 {
     use HasFactory;
@@ -30,6 +32,16 @@ class Product extends Model
             if(!in_array('deleted', $columns)) {
                 $builder->where('products.deleted', 0);
             }
+        });
+    }
+
+    protected static function booted()
+    {
+        parent::booted();
+
+        static::saved(function ($build) {
+            // Schedule a job to clear the cache in queue
+            ClearCache::dispatch('products');
         });
     }
 

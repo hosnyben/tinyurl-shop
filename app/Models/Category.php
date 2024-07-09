@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Jobs\ClearCache;
+
 class Category extends Model
 {
     use HasFactory;
@@ -15,7 +17,7 @@ class Category extends Model
     // For optimisation purpose, we won't be using Laravel SofDeletes. as it creates date column instead of bool
 
     protected $primaryKey = 'uuid';
-
+    protected $fillable = ['name'];
     protected $hidden = ['id','deleted','created_at','updated_at'];
 
     protected static function boot()
@@ -28,6 +30,16 @@ class Category extends Model
             if(!in_array('deleted', $columns)) {
                 $builder->where('deleted', 0);
             }
+        });
+    }
+
+    protected static function booted()
+    {
+        parent::booted();
+
+        static::saved(function ($build) {
+            // Schedule a job to clear the cache in queue
+            ClearCache::dispatch('categories');
         });
     }
 

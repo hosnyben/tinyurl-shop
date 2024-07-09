@@ -22,34 +22,34 @@ class ProductController extends Controller
     {
         $cacheKey = 'products_' . $request->input('top', 0) . '_' . $request->input('sort', 'asc') . '_' . $request->input('sortBy', 'name') . '_' . $request->input('page', 1);
 
-        if( Cache::has($cacheKey) ) {
+        if(Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         } else {
             return Cache::rememberForever($cacheKey, function () use ($request) {
                 // Added products table prefix to avoid ambiguity when joining tables
                 $products = Product::select(['products.uuid','products.name','products.description','products.price'])
                                 ->where('products.top', $request->input('top', 0));
-        
+
                 // Paginate products
                 $sort = $request->input('sort', 'asc');
                 $sortBy = $request->input('sortBy', 'name');
-        
+
                 $sortMapping = [
                     'name' => 'products.name',
                     'price' => 'products.price',
                     'category' => 'categories.name'
                 ];
-        
+
                 if($sortBy === 'category') {
                     $products = $products
                                     ->join('category_product', 'products.uuid', '=', 'category_product.product_uuid')
                                     ->join('categories', 'category_product.category_uuid', '=', 'categories.uuid');
                 }
-        
+
                 $products = $products
                                 ->orderBy($sortMapping[$sortBy], $sort)
                                 ->simplePaginate(config('app.pagination'));
-        
+
                 return response()->json($products);
             });
         }
