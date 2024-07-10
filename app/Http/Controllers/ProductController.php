@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index(ProductIndex $request)
     {
-        $cacheKey = 'products_' . $request->input('top', 0) . '_' . $request->input('sort', 'asc') . '_' . $request->input('sortBy', 'name') . '_' . $request->input('page', 1);
+        $cacheKey = 'products_' . $request->input('top', 0) . '_' . $request->input('sort', 'asc') . '_' . $request->input('sortBy', 'top') . '_' . $request->input('page', 1);
 
         if(Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
