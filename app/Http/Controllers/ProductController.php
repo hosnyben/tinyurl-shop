@@ -20,6 +20,74 @@ class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     *     path="/api/products",
+     *     operationId="products.index",
+     *     tags={"Products"},
+     *     summary="List products",
+     *     description="List products endpoint",
+     *     @OA\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *         description="Sort order"
+     *     ),
+     *     @OA\Parameter(
+     *         name="sortBy",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *         description="Field to sort by"
+     *     ),
+     *     @OA\Parameter(
+     *         name="top",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *         description="Number of top results to return"
+     *     ),
+     *     @OA\Parameter(
+     *         name="category",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *         description="Category filter"
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *         description="Page number"
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function index(ProductIndex $request)
     {
@@ -64,6 +132,75 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Post(
+     *     path="/api/products/",
+     *     operationId="product.create",
+     *     tags={"Products"},
+     *     summary="Create product",
+     *     description="Create product endpoint",
+     *     @OA\RequestBody(
+     *         request="CreateProduct",
+     *         description="Create product request body",
+     *         required=true,
+     * 
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"name","description","price","top","categories"},
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     description="The product name",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="The description of the product",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     type="string",
+     *                     description="The price of the product",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="top",
+     *                     type="boolean",
+     *                     description="The price of the product",
+     *                     default="false"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="categories",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="string"
+     *                     ),
+     *                     description="Array of categories UUID",
+     *                     default="[]"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function store(ProductStore $request)
     {
@@ -83,6 +220,38 @@ class ProductController extends Controller
 
     /**
      * Display the specified resource.
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     *     path="/api/products/{uuid}",
+     *     operationId="product.show",
+     *     tags={"Products"},
+     *     summary="Show product",
+     *     description="Show product endpoint",
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="Product uuid",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function show(Request $request, string $id)
     {
@@ -109,6 +278,84 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Patch(
+     *     path="/api/products/{uuid}",
+     *     operationId="product.update",
+     *     tags={"Products"},
+     *     summary="Update product",
+     *     description="Update product endpoint",
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="Product uuid",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         request="UpdateProduct",
+     *         description="Update product request body",
+     *         required=true,
+     * 
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"name","description","price","top","categories"},
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     description="The product name",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     description="The description of the product",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     type="string",
+     *                     description="The price of the product",
+     *                     default=""
+     *                 ),
+     *                 @OA\Property(
+     *                     property="top",
+     *                     type="boolean",
+     *                     description="The price of the product",
+     *                     default="false"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="categories",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         type="string"
+     *                     ),
+     *                     description="Array of categories UUID",
+     *                     default="[]"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function update(ProductUpdate $request, $id)
     {
@@ -129,6 +376,38 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Delete(
+     *     path="/api/products/{uuid}",
+     *     operationId="product.destroy",
+     *     tags={"Products"},
+     *     summary="Update product",
+     *     description="Create product endpoint",
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="Product uuid",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function destroy(string $id)
     {
@@ -144,6 +423,29 @@ class ProductController extends Controller
 
     /**
      * Get the last viewed products
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @OA\Get(
+     *     path="/api/last-viewed-products",
+     *     operationId="products.lastviewed",
+     *     tags={"Products"},
+     *     summary="List last viwed products",
+     *     description="List last viwed products endpoint",
+     *     @OA\Response(
+     *         response="200",
+     *         description="OK",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Error processing the request",
+     *         @OA\MediaType(
+     *             mediaType="application/json"
+     *         )
+     *     )
+     * )
      */
     public function lastViewedProducts(Request $request)
     {
