@@ -170,9 +170,9 @@ class ProductController extends Controller
      *                 ),
      *                 @OA\Property(
      *                     property="top",
-     *                     type="boolean",
-     *                     description="The price of the product",
-     *                     default="false"
+     *                     type="string",
+     *                     description="The price of the product (0 or 1)",
+     *                     default="0"
      *                 ),
      *                 @OA\Property(
      *                     property="categories",
@@ -209,6 +209,10 @@ class ProductController extends Controller
 
             $product = new Product(Arr::except($validatedData, ['category']));
             $product->save();
+
+            if( !is_array($validatedData['categories']) ) {
+                $validatedData['categories'] = explode(',', $validatedData['categories']);
+            }
 
             $product->categories()->attach($validatedData['categories']);
 
@@ -304,7 +308,7 @@ class ProductController extends Controller
      *             mediaType="application/x-www-form-urlencoded",
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name","description","price","top","categories"},
+     *                 required={"categories"},
      *                 @OA\Property(
      *                     property="name",
      *                     type="string",
@@ -325,9 +329,9 @@ class ProductController extends Controller
      *                 ),
      *                 @OA\Property(
      *                     property="top",
-     *                     type="boolean",
-     *                     description="The price of the product",
-     *                     default="false"
+     *                     type="string",
+     *                     description="The price of the product (0 or 1)",
+     *                     default="0"
      *                 ),
      *                 @OA\Property(
      *                     property="categories",
@@ -365,6 +369,10 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
             $product->fill(Arr::except($validatedData, ['category']));
             $product->save();
+
+            if( !is_array($validatedData['categories']) ) {
+                $validatedData['categories'] = explode(',', $validatedData['categories']);
+            }
 
             $product->categories()->sync($validatedData['categories']);
 

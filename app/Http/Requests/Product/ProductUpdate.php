@@ -26,7 +26,7 @@ class ProductUpdate extends FormRequest
             'description' => 'string',
             'price' => 'integer',
             'top' => 'boolean',
-            'categories' => 'required|array',
+            'categories' => 'required',
         ];
     }
 }

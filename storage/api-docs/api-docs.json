@@ -317,9 +317,9 @@
                                         "default": ""
                                     },
                                     "top": {
-                                        "description": "The price of the product",
-                                        "type": "boolean",
-                                        "default": "false"
+                                        "description": "The price of the product (0 or 1)",
+                                        "type": "string",
+                                        "default": "0"
                                     },
                                     "categories": {
                                         "description": "Array of categories UUID",
@@ -443,10 +443,6 @@
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "description",
-                                    "price",
-                                    "top",
                                     "categories"
                                 ],
                                 "properties": {
@@ -466,9 +462,9 @@
                                         "default": ""
                                     },
                                     "top": {
-                                        "description": "The price of the product",
-                                        "type": "boolean",
-                                        "default": "false"
+                                        "description": "The price of the product (0 or 1)",
+                                        "type": "string",
+                                        "default": "0"
                                     },
                                     "categories": {
                                         "description": "Array of categories UUID",
