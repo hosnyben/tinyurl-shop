@@ -22,7 +22,6 @@
             </h3>
             <p class="text-sm text-gray-500">{{ product.description }}</p>
             <div class="flex flex-1 flex-col justify-end">
-              <p class="text-sm italic text-gray-500">{{ product.options }}</p>
               <p class="text-base font-medium text-gray-900">{{ product.price }}</p>
             </div>
           </div>

@@ -13,26 +13,6 @@
 					<p class="text-base text-gray-900">{{ product.description }}</p>
 				</div>
 			</div>
-
-			<div class="mt-10">
-				<h3 class="text-sm font-medium text-gray-900">Highlights</h3>
-
-				<div class="mt-4">
-					<ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-						<li v-for="highlight in product.highlights" :key="highlight" class="text-gray-400">
-							<span class="text-gray-600">{{ highlight }}</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-			<section aria-labelledby="shipping-heading" class="mt-10">
-				<h2 id="shipping-heading" class="text-sm font-medium text-gray-900">Details</h2>
-
-				<div class="mt-4 space-y-6">
-					<p class="text-sm text-gray-600">{{ product.details }}</p>
-				</div>
-			</section>
 		</div>
 
 		<section aria-labelledby="related-products-heading" class="bg-white">
@@ -62,13 +42,7 @@
 		</section>
 	</main>
 </template>  
-<script setup>
-  import { ref } from 'vue'
-  import {
-    RadioGroup,
-    RadioGroupOption,
-  } from '@headlessui/vue'
-	
+<script setup>	
   const product = {
     name: 'Basic Tee 6-Pack',
     price: '$192',
@@ -121,46 +95,6 @@
     details:
       'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
   }
-  const reviews = {
-    href: '#',
-    average: 4,
-    totalCount: 117,
-    featured: [
-      {
-        id: 1,
-        title: 'This is the best white t-shirt out there',
-        rating: 5,
-        content: `
-          <p>I've searched my entire life for a t-shirt that reflects every color in the visible spectrum. Scientists said it couldn't be done, but when I look at this shirt, I see white light bouncing right back into my eyes. Incredible!</p>
-        `,
-        author: 'Mark Edwards',
-        avatarSrc:
-          'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixqx=oilqXxSqey&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      {
-        id: 2,
-        title: 'Adds the perfect variety to my wardrobe',
-        rating: 4,
-        content: `
-          <p>I used to be one of those unbearable minimalists who only wore the same black v-necks every day. Now, I have expanded my wardrobe with three new crewneck options! Leaving off one star only because I wish the heather gray was more gray.</p>
-        `,
-        author: 'Blake Reid',
-        avatarSrc:
-          'https://images.unsplash.com/photo-1520785643438-5bf77931f493?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
-      },
-      {
-        id: 3,
-        title: 'All good things come in 6-Packs',
-        rating: 5,
-        content: `
-          <p>Tasty beverages, strong abs that will never be seen due to aforementioned tasty beverages, and these Basic Tees!</p>
-        `,
-        author: 'Ben Russel',
-        avatarSrc:
-          'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-    ],
-  }
   const products = [
     {
       id: 1,
@@ -173,7 +107,4 @@
     },
     // More products...
   ]
-  
-  const selectedColor = ref(product.colors[0])
-  const selectedSize = ref(product.sizes[2])
   </script>
