@@ -53,7 +53,7 @@ export function deleteProduct($uuid){
 
 // Get last viewed products
 export function getLastViewedProducts(){
-    return api.get('/products/last-viewed').then(response => {
+    return api.get('/last-viewed-products').then(response => {
         return response.data
     });
 }

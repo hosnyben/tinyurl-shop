@@ -1,28 +1,25 @@
 <template>
   <main class="mx-auto max-w-2xl px-4 lg:max-w-7xl lg:px-8">
     <div class="border-b border-gray-200 pb-10 pt-24 mb-12">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
-      <p class="mt-4 text-base text-gray-500">Checkout out the latest release of Basic Tees, new and improved with four openings!</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">{{ pageTitle }} (Infinite Scroll)</h1>
     </div>
 
     <section aria-labelledby="product-heading" class="my-6">
-      <h2 id="product-heading" class="sr-only">Products</h2>
-
-      <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-4">
-        <div v-for="product in products" :key="product.id" class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+      <div id="products" class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-4">
+        <div v-for="(product, key) in products" :key="product.uuid" class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
           <div class="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
-            <img :src="product.imageSrc" :alt="product.imageAlt" class="h-full w-full object-cover object-center sm:h-full sm:w-full" />
+            <img :src="`https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-0${(key % 6) + 1}.jpg`" :alt="product.name" class="h-full w-full object-cover object-center sm:h-full sm:w-full" />
           </div>
           <div class="flex flex-1 flex-col space-y-2 p-4">
             <h3 class="text-sm font-medium text-gray-900">
-              <a :href="product.href">
+              <RouterLink :to="`/product/${product.uuid}`">
                 <span aria-hidden="true" class="absolute inset-0" />
                 {{ product.name }}
-              </a>
+              </RouterLink>
             </h3>
             <p class="text-sm text-gray-500">{{ product.description }}</p>
             <div class="flex flex-1 flex-col justify-end">
-              <p class="text-base font-medium text-gray-900">{{ product.price }}</p>
+              <p class="text-base font-medium text-gray-900">{{ product.price / 100 }}$</p>
             </div>
           </div>
         </div>
@@ -32,31 +29,59 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-// useRoute().params.slug
+import { ref, onMounted, onUnmounted } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
+import { getProducts, getCategory } from '@/api';
 
-const products = [
-  {
-    id: 1,
-    name: 'Basic Tee 8-Pack',
-    href: '#',
-    price: '$256',
-    description: 'Get the full lineup of our Basic Tees. Have a fresh shirt all week, and an extra for laundry day.',
-    options: '8 colors',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-01.jpg',
-    imageAlt: 'Eight shirts arranged on table in black, olive, grey, blue, white, red, mustard, and green.',
-  },
-  {
-    id: 2,
-    name: 'Basic Tee',
-    href: '#',
-    price: '$32',
-    description: 'Look like a visionary CEO and wear the same black t-shirt every day.',
-    options: 'Black',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-02.jpg',
-    imageAlt: 'Front of plain black t-shirt.',
-  },
-  // More products...
-];
+// Get route name
+const routeName = useRoute().name;
+const uuid = useRoute().params.uuid;
+const products = ref([]);
+const page = ref(1);
+const loading = ref(true);
+const pageTitle = ref('Custom page');
+
+onMounted(async () => {
+  if( routeName == 'category' && uuid ) {
+    const data = await getCategory(uuid);
+    pageTitle.value = data.name;
+  } else if( routeName == 'top-products' ) {
+    pageTitle.value = 'Top products';
+  }
+  
+  await fetchProducts();
+  window.addEventListener("scroll", checkScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", checkScroll);
+});
+
+const checkScroll = () => {
+    let element = document.getElementById('products');
+
+    if (element.getBoundingClientRect().bottom < window.innerHeight && !loading.value) {
+        page.value++;
+        fetchProducts();
+    }
+};
+
+const fetchProducts = async () => {
+  loading.value = true;
+  var params = {
+    page: page.value
+  };
+
+  if( routeName == 'category' && uuid ) {
+    params = {category: uuid,...params};
+  } else if( routeName == 'top-products' ) {
+    params = {top: 1,...params};
+  }
+
+  const { data } = await getProducts(params);
+  if( data.length === 0 ) window.removeEventListener("scroll", checkScroll);
+  products.value = [...products.value,...data];
+
+  loading.value = false;
+};
 </script>

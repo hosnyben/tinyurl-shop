@@ -11,7 +11,10 @@ use App\Http\Requests\Product\ProductStore;
 
 use Illuminate\Support\Arr;
 
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class ProductController extends Controller
 {
@@ -20,7 +23,7 @@ class ProductController extends Controller
      */
     public function index(ProductIndex $request)
     {
-        $cacheKey = 'products_' . $request->input('top', 0) . '_' . $request->input('sort', 'asc') . '_' . $request->input('sortBy', 'top') . '_' . $request->input('page', 1);
+        $cacheKey = 'products_' . $request->input('top', 0) . '_' . $request->input('sort', 'asc') . '_' . $request->input('sortBy', 'top') . '_cat' . $request->input('category', 'none') . '_' . $request->input('page', 1);
 
         if(Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
@@ -40,10 +43,14 @@ class ProductController extends Controller
                     'category' => 'categories.name'
                 ];
 
-                if($sortBy === 'category') {
+                if( $sortBy === 'category' || $request->has('category')) {
                     $products = $products
                                     ->join('category_product', 'products.uuid', '=', 'category_product.product_uuid')
                                     ->join('categories', 'category_product.category_uuid', '=', 'categories.uuid');
+    
+                    if( $request->has('category') ) {
+                        $products = $products->where('categories.uuid', $request->input('category'));
+                    }
                 }
 
                 $products = $products
@@ -77,12 +84,24 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         try {
             $product = Product::findOrFail($id);
+            $cookieKeys = md5('last_viewed_products');
 
-            return response()->json($product);
+            $lastViewedProducts = json_decode($request->cookie($cookieKeys, '[]'),true);
+    
+            if (!in_array($id, $lastViewedProducts)) {
+                array_unshift($lastViewedProducts, $id);
+            }
+        
+            $lastViewedProducts = array_unique($lastViewedProducts);
+            $lastViewedProducts = array_slice($lastViewedProducts, 0, 10);
+
+            $cookie = cookie($cookieKeys, json_encode($lastViewedProducts), 60 * 24 * 30); // Cookie valid for 30 days
+
+            return response()->json($product)->withCookie($cookie);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -121,5 +140,23 @@ class ProductController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    /**
+     * Get the last viewed products
+     */
+    public function lastViewedProducts(Request $request)
+    {
+        $cookieKeys = md5('last_viewed_products');
+        $lastViewedProducts = json_decode($request->cookie($cookieKeys, '[]'),true);
+
+        $products = Product::whereIn('uuid', $lastViewedProducts)->get()->toArray();
+
+        $sortedProducts = [];
+        foreach ($lastViewedProducts as $key => $value) {
+            $sortedProducts[] = $products[array_search($value, array_column($products, 'uuid'))];
+        }
+
+        return response()->json($sortedProducts);
     }
 }
