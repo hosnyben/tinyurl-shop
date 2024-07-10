@@ -23,6 +23,9 @@ cp .env.example .env
 docker compose up -d
 
 # Generate app key
+docker exec -it tinyurl_api php artisan key:generate
+
+# Migrate database
 docker exec -it tinyurl_api php artisan migrate
 
 # Seed the database
