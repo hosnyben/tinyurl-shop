@@ -3,6 +3,7 @@ Hello thank you for your time reviewing my test. I would like first mention some
 - I couldn't have time to create a form to create new product / category. However to perform that I've set "Swagger OpenAPI" so you can perform your queries as you wish.
 - I managed to seed 50M records in my machine to test performance. That application is cache based (redis). The first http request will be perfomed in DB. However the others will be loaded from cache level.
 - When you update a record (Category / Product) it will dispatch a job in the queue to clear the cache of up to date datas. I didn't have time enough but I was looking to have a scheduled job to generate cache without the firt http request.
+- I wanted to use the SoftDelete Trait offered by Laravel but it works only with "deleted_at" (Timestamps). And for DB optimisation purpose I wanted to used a "deleted" (Boolean) instead.
 - Please do not hesitate to reach out to me for more details
 
 ## Requirements 
