@@ -1,88 +1,89 @@
 <script setup>
-const collections = [
-  {
-    name: "Women's",
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg',
-    imageAlt: 'Woman wearing a comfortable cotton t-shirt.',
-  },
-  {
-    name: "Men's",
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg',
-    imageAlt: 'Man wearing a comfortable and casual cotton t-shirt.',
-  },
-  {
-    name: 'Desk Accessories',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-03.jpg',
-    imageAlt: 'Person sitting at a wooden desk with paper note organizer, pencil and tablet.',
-  },
-]
-const trendingProducts = [
-  {
-    id: 1,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 2,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 3,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  },
-  {
-    id: 4,
-    name: 'Leather Long Wallet',
-    color: 'Natural',
-    price: '$75',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-    imageAlt: 'Hand stitched, orange leather long wallet.',
-  }
-]
-const perks = [
-  {
-    name: 'Free returns',
-    imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-returns-light.svg',
-    description: 'Not what you expected? Place it back in the parcel and attach the pre-paid postage stamp.',
-  },
-  {
-    name: 'Same day delivery',
-    imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-calendar-light.svg',
-    description:
-      'We offer a delivery service that has never been done before. Checkout today and receive your products within hours.',
-  },
-  {
-    name: 'All year discount',
-    imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-gift-card-light.svg',
-    description: 'Looking for a deal? You can use the code "ALLYEAR" at checkout and get money off all year round.',
-  },
-  {
-    name: 'For the planet',
-    imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-planet-light.svg',
-    description: 'We’ve pledged 1% of sales to the preservation and restoration of the natural environment.',
-  },
-]
+  const collections = [
+    {
+      name: "Women's",
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg',
+      imageAlt: 'Woman wearing a comfortable cotton t-shirt.',
+    },
+    {
+      name: "Men's",
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg',
+      imageAlt: 'Man wearing a comfortable and casual cotton t-shirt.',
+    },
+    {
+      name: 'Desk Accessories',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-collection-03.jpg',
+      imageAlt: 'Person sitting at a wooden desk with paper note organizer, pencil and tablet.',
+    },
+  ]
+  const trendingProducts = [
+    {
+      id: 1,
+      name: 'Leather Long Wallet',
+      color: 'Natural',
+      price: '$75',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
+      imageAlt: 'Hand stitched, orange leather long wallet.',
+    },
+    {
+      id: 2,
+      name: 'Leather Long Wallet',
+      color: 'Natural',
+      price: '$75',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
+      imageAlt: 'Hand stitched, orange leather long wallet.',
+    },
+    {
+      id: 3,
+      name: 'Leather Long Wallet',
+      color: 'Natural',
+      price: '$75',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
+      imageAlt: 'Hand stitched, orange leather long wallet.',
+    },
+    {
+      id: 4,
+      name: 'Leather Long Wallet',
+      color: 'Natural',
+      price: '$75',
+      href: '#',
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-04-trending-product-02.jpg',
+      imageAlt: 'Hand stitched, orange leather long wallet.',
+    }
+  ]
+  const perks = [
+    {
+      name: 'Free returns',
+      imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-returns-light.svg',
+      description: 'Not what you expected? Place it back in the parcel and attach the pre-paid postage stamp.',
+    },
+    {
+      name: 'Same day delivery',
+      imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-calendar-light.svg',
+      description:
+        'We offer a delivery service that has never been done before. Checkout today and receive your products within hours.',
+    },
+    {
+      name: 'All year discount',
+      imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-gift-card-light.svg',
+      description: 'Looking for a deal? You can use the code "ALLYEAR" at checkout and get money off all year round.',
+    },
+    {
+      name: 'For the planet',
+      imageUrl: 'https://tailwindui.com/img/ecommerce/icons/icon-planet-light.svg',
+      description: 'We’ve pledged 1% of sales to the preservation and restoration of the natural environment.',
+    },
+  ]
 </script>
 
 <template>
+  <main>
   <!-- Hero section -->
   <div class="relative">
     <!-- Background image and overlap -->
@@ -108,7 +109,7 @@ const perks = [
         <div class="h-48 w-full bg-white" />
       </div>
       <div class="relative py-32">
-        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Mid-Season Sale</h1>
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">TinyURL Shop</h1>
         <div class="mt-4 sm:mt-6">
           <a href="#" class="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-white hover:bg-indigo-700">Shop Collection</a>
         </div>
@@ -197,4 +198,5 @@ const perks = [
       </div>
     </div>
   </section>
+  </main>
 </template>
